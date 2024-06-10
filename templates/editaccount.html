@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Edit Account Page{% endblock %}
+{% set active_page = 'editaccount' %}
+{% block content %}
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit Account</h3></div>
+                            <div class="card-body">
+                                <form method="POST" action="/editaccount?user_id={{ user.id }}">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="firstName" type="text" placeholder="First Name" name="first_name" value="{{ user.first_name }}" />
+                                                <label for="firstName">First Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="lastName" type="text" placeholder="Last Name" name="last_name" value="{{ user.last_name }}" />
+                                                <label for="lastName">Last Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="email" value="{{ user.email }}" />
+                                        <label for="inputEmail">Email Address</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="inputSchoolID" type="text" placeholder="School ID" name="school_id" value="{{ user.school_id }}" />
+                                        <label for="inputSchoolID">School ID</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="inputBalance" type="number" step="0.01" placeholder="Balance" name="balance" value="{{ user.balance }}" />
+                                        <label for="inputBalance">Balance</label>
+                                    </div>
+                                    <div class="mt-4 mb-0">
+                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Update Account</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="layoutAuthentication_footer">
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Bergen Tech Cuisine 2024</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Your Cart{% endblock %}
+{% set active_page = 'cart' %}
+{% block content %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+
+<header class="bg-dark py-5" style="background: url('static/assets/supermarket.png') no-repeat center center; background-size: cover;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white text-shadow">
+            <h1 class="display-4 fw-bolder text-shadow">Your Cart</h1>
+            <p class="lead fw-normal text-white-25 mb-0 text-shadow">Review Your Ordered Items</p>
+        </div>
+    </div>
+</header>
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+        <table class="table table-hover" style="width:100%">
+            <tbody id="thechadcart" style="width:100%">
+
+            </tbody>
+        </table>
+        <div class="text-center mt-4">
+            <div id="total-price" style="font-size:60px; margin-bottom:20px"></div>
+            <button id="form" class="btn btn-warning">Submit Order</a>
+        </div>
+    </div>
+    <script src="static/js/checkout.js"></script>
+    <div class="mt-4" style="margin-left: 20px">
+        <a href="/" class="btn btn-primary">🠜 Continue Shopping</a>
+    </div>
+</section>
+
+<script>
+// JavaScript code to run when the webpage loads
+document.addEventListener('DOMContentLoaded', function() {
+
+    True = true
+    False = false
+    woah = {{mealsData|safe}}
+    
+    refreshCart(woah)
+
+    document.getElementById('form').addEventListener('click', function(event) {
+        submit_order(woah)
+    });
+});
+</script>
+
+{% endblock %}

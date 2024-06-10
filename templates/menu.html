@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}HOME PAGE{% endblock %}
+{% set active_page = 'home' %}
+{% block content %}
+
+<header class="bg-dark py-5" style="background: url('static/assets/food.png') no-repeat center center; background-size: cover;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white text-shadow">
+            <h1 class="display-4 fw-bolder text-shadow">BT Menu</h1>
+            <p class="lead fw-normal text-white-25 mb-0 text-shadow">Check out our delicious food items!</p>
+        </div>
+    </div>
+</header>
+
+<!-- Section-->
+<section class="py-5">
+    <div class="row float-right justify-content-end align-items-right" style="width:100%;">
+        <div class="col" style="width:150px"></div>
+        <img class="horiz-flip-image btn btn-secondary" src="static/assets/chevron.png" alt="" id="cart-switch" style="display:none">
+        <div class="stupid-flask1 cart-container cart-body">
+            <div class="card h-100" style="margin-left: 10px;">
+                <div class="text-center">
+                    <div class="card-header position-relative" style="position: sticky; top: 0; z-index: 999;">
+                        {% if current_user.type == 1 %}
+                        <h5 class="fw-bolder">Toolbar</h5>
+                        {% else %}
+                        <h5 class="fw-bolder">Cart</h5>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if current_user.type == 1 %}
+                <a href="/addmeal" class="align-self-start justify-content-start toolbar-a">
+                    <div class="floating-button floating-button-toolbar d-flex align-items-center">
+                        <button class="toolbar-btn btn btn-secondary d-flex align-items-center">
+                            <img class="rounded" src="static/assets/plus.jpg" alt="+" style="height: 20px; width: 20px; margin-right: 5px;" />
+                            Add Meal
+                        </button>
+                    </div>
+                </a>
+                <a href="/addcategory" class="align-self-start justify-content-start toolbar-a">
+                    <div class="floating-button floating-button-toolbar d-flex align-items-center">
+                        <button class="toolbar-btn btn btn-secondary d-flex align-items-center">
+                            <img class="rounded" src="static/assets/plus.jpg" alt="+" style="height: 20px; width: 20px; margin-right: 5px;" />
+                            Add Category
+                        </button>
+                    </div>
+                </a>
+                {% else %}
+                <div class="card-body stupid-flask2" class="cart-body" style="padding: 0; overflow:auto">
+                    <table class="table card-body-table" style="width:100%">
+                        <tbody id="thechadcart" style="width:100%">
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                {% if not current_user.type == 1 %}
+                <div class="card-footer">
+                    <div class="align-self-start justify-content-start toolbar-a justify-content-center">
+                        <div class="floating-button floating-button-toolbar d-flex align-items-center justify-content-center">
+                            <a href="/checkout" class="toolbar-btn btn btn-lg btn-primary d-flex align-items-center justify-content-center" style="height:60px; margin-top:-10px">
+                                <i class="bi-cart-fill" style="font-size:40px"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-10">
+            <div class="container px-4 px-lg-5 mt-5" class="main-content" id="layoutSidenav_content">
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary category-button" onclick="filterMeals('all', this)">All</button>
+                    {% for category in categories %}
+                    <button class="btn btn-outline-dark category-button" onclick="filterMeals('{{ category.name }}', this)">{{ category.name }}</button>
+                    {% if current_user.type == 1 %}
+                    <a style="position:absolute" href="{{ url_for('delcategory', category_id=category.id) }}" onclick="return confirm('Are you sure you want to delete {{ category.name }}?')">
+                        <img class="btn btn-danger btn-circle" src="static/assets/cross.png" style="text-align: center; vertical-align: top; zoom: 0.6; height: 27px; width: 25px; padding: 5px; transform: translate(-14px, -10px)">
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    {% if current_user.type == 1 %}
+                    <a href="addcategory"><img class="rounded darken-image" src="static/assets/plus.jpg" alt="+" style="height: 35px; width: 35px; margin-right: 5px;" /></a>
+                    {% endif %}
+                </div>
+                <div id="meals-container">
+                    {% for category in categories %}
+                    <div class="category-section mb-5 p-3 border rounded" data-category="{{ category.name }}" style="background-color: #f8f9fa;">
+                        <h3 class="text-center mb-4">{{ category.name }}</h3>
+                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
+                            {% for meal in meals if meal.category_id == category.id %}
+                            <div class="col mb-5 meal-col" data-category="{{ meal.category.name }}">
+                                <div class="card h-100 meal-card" id="meal-{{ meal.id }}">
+                                    <!-- delete button -->
+                                    <div class="position-relative p-2">
+                                        <div class="tiny-btn-container">
+                                            {% if current_user.type == 1 %}
+                                            <a href="{{ url_for('editmeal', meal_id=meal.id) }}" class="position-absolute" style="top: -2px; right: 50px;">
+                                                <img style="height: 27px; width: 25px; padding: 5px 5px;" class="btn btn-warning" id="meal-delete" src="static/assets/edit.png">
+                                            </a>
+                                            <a href="{{ url_for('delmeal', meal_id=meal.id) }}" class="position-absolute" style="top: -2px; right: 20px;" onclick="return confirm('Are you sure you want to delete {{ meal.name }}?')">
+                                                <img style="height: 27px; width: 25px; padding: 5px 5px;" class="btn btn-danger" id="meal-delete" src="static/assets/delete.png">
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <!-- Product image-->
+                                    <div class="d-flex justify-content-center">
+                                        <img style="width: 200px; height: 200px; padding: 5px 10px;" class="card-img-top" src="data:image/jpeg;base64,{{ image_data_b64[meal.id] }}" alt="..." />
+                                    </div>
+                                    <!-- Product details-->
+                                    <div class="card-body p-4">
+                                        <div class="text-center">
+                                            <!-- Product name-->
+                                            <h5 class="fw-bolder">{{ meal.name }}</h5>
+                                            <!-- Product price-->
+                                            ${{ "{:.2f}".format(meal.price) }}
+                                        </div>
+                                    </div>
+                                    <!-- Product actions-->
+                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
+                                        <a class="text-center btn btn-dark mt-auto" href="{{ url_for('customizemeal', meal_id=meal.id) }}" style="margin-top: 5px;">Customize</a>
+                                        <button onclick="updateCart(mealsData['{{meal.id}}'], [{{meal.id}}, 1, {} ])" class="text-center btn btn-outline-dark">+ Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="static/js/menu.js"></script>
+</section>
+
+<script>
+    function filterMeals(category, button) {
+        let categories = document.querySelectorAll('.category-section');
+        categories.forEach(cat => {
+            let meals = cat.querySelectorAll('.meal-col');
+            let categoryName = cat.getAttribute('data-category');
+            if (category === 'all' || categoryName === category) {
+                cat.style.display = 'block';
+                meals.forEach(meal => {
+                    if (category === 'all' || meal.getAttribute('data-category') === category) {
+                        meal.style.display = 'block';
+                    } else {
+                        meal.style.display = 'none';
+                    }
+                });
+            } else {
+                cat.style.display = 'none';
+            }
+        });
+
+        // Update button styles
+        let buttons = document.querySelectorAll('.category-button');
+        buttons.forEach(btn => {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-outline-dark');
+        });
+        button.classList.remove('btn-outline-dark');
+        button.classList.add('btn-primary');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        True = true
+        False = false
+        mealsData = {{mealsData|safe}}
+        
+        refreshCart(mealsData)
+    });
+</script>
+
+{% endblock %}

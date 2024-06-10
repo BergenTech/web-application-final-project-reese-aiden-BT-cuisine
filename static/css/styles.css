@@ -1,0 +1,402 @@
+#meal.card {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.invisible-tag {
+    display: none;
+}
+
+.category-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.category-section h3 {
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+    color: #343a40;
+}
+
+.meal-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.meal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.meal-card img {
+    border-radius: 8px;
+}
+
+.meal-card .card-body {
+    padding: 15px;
+}
+
+.meal-card .card-footer {
+    padding: 10px;
+}
+
+#meal.card .card-header {
+    background-color: transparent;
+    border: none;
+}
+#meal-delete {
+    position: absolute;
+    top: 5px;
+    right: -18px;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #111;
+    color: #818181;
+    padding-top: 20px;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.form-floating-xl > .form-control,
+.form-floating-xl > .datatable-input {
+    height: 50px; /* Adjust height as needed */
+    font-size: 45px; /* Match input font size */
+    text-align: center;
+}
+
+.form-floating-xl > input[type=number]::-webkit-outer-spin-button, 
+.form-floating-xl > input[type=number]::-webkit-inner-spin-button {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 1;
+}
+
+.form-floating.no-padding > .form-control,
+.form-floating.no-padding > .datatable-input,
+.form-floating.no-padding > .form-control-plaintext,
+.form-floating.no-padding > .form-select,
+.form-floating.no-padding > .datatable-selector {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.cool-looking-add-button {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+
+.small-add-button {
+    border: 1px solid #ccc;
+    display: inline-block;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    margin-top: -12px;
+    margin-bottom: 10px;
+}
+
+.tag-title {
+    width: 80%;
+    box-sizing: content-box;
+    font-weight: bold;
+}
+
+.text-shadow {
+    text-shadow: 6px 6px 15px rgba(0, 0, 0, 1);
+}
+
+.hover-input {
+    border: 2px solid transparent;
+    padding: 5px; /* Add padding to avoid content shift on hover */
+    outline: none; /* Remove default focus outline */
+    transition: border 0.3s; /* Smooth transition for border appearance */
+    background: none ;
+  }
+
+/* Add a border on hover */
+.hover-input:hover {
+    border: 2px solid black; /* Adjust border width and color as needed */
+}
+
+.hover-span {
+    padding: 5px; /* Add padding to avoid content shift on hover */
+    outline: none; /* Remove default focus outline */
+    transition: border 0.3s; /* Smooth transition for border appearance */
+    text-align: left;
+  }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Center the pagination div */
+    position: absolute; /* Use fixed positioning */
+    top: 189px;
+    left: 50%; /* Move the div to the center horizontally */
+    transform: translateX(-50%); /* Adjust to center it exactly */
+}
+
+.search-pagination-container {
+    display: flex;
+    margin-right: auto; /* Pushes the search bar to the left */
+    align-items: center;
+    justify-content: space-between; /* Adjust spacing between elements */
+}
+
+.pagination-button {
+    margin: 0 5px;
+}
+
+.pagination-button a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.pagination-button a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination-page-numbers strong {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.pagination-page-numbers a {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination-page-numbers a:hover {
+    background-color: #f0f0f0;
+}
+
+.search-bar {
+    display: inline-block; /* Display inline to align with pagination */
+    margin-right: auto; /* Pushes the search bar to the left */
+}
+
+.file-upload-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#add-tag {
+    align-self: center; /* Vertically center the Add Tag button */
+    display: inline-block;
+}
+
+#meal-tag, #tag-buttons {
+    margin: 0px;
+}
+
+#meal-tag.col, #tag-buttons.col {
+    margin: 0px;
+    margin-bottom: 10px;
+}
+
+.tag-delete-container {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.btn-circle {
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    padding: 16px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    border: 1px solid #ced4da; /* Define border color */
+    background-color: #fff; /* Set background color to white */
+    position: relative; /* Position relative to position the caret */
+}
+
+.dropbtn::after {
+    content: '▼'; /* Unicode character for the caret */
+    position: absolute;
+    right: 10px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+    font-size: 12px; /* Adjust size as needed */
+    color: #333; /* Adjust color as needed */
+}
+
+/* Dropbutton hover state */
+.dropbtn:hover {
+    border: 1px solid #ced4da; /* Ensure the border remains the same color */
+    background-color: #f0f0f0; /* Optionally, change background color on hover */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-content label {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content label:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.toolbar-a {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.floating-button-toolbar {
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    width: 100%; /* Full width */
+    margin: 10px;
+    margin-bottom: 0px;
+}
+
+.toolbar-btn {
+    padding: 15px 20px; /* Increase vertical and horizontal padding */
+    width: 100%;
+}
+
+.toolbar-a {
+    color: inherit; /* Use the same color as the parent */
+    text-decoration: none; /* Remove underline */
+}
+
+.cart-br {
+    content: "";
+    margin: 2em;
+    display: block;
+    font-size: 20%;
+}
+
+
+.card-body-table {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed; /* Optional: Helps to ensure the table layout is consistent */
+}
+
+.no-buttons input[type=number]::-webkit-inner-spin-button, 
+.no-buttons input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.card-body-table tbody {
+    display: block;
+    max-height: 500px; /* Same as card-body max-height */
+    overflow-y: auto; /* Enable scrolling within the tbody */
+}
+
+.card-body-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* Ensures that the table cells take up the correct amount of space */
+}
+
+.darken-image {
+    transition: filter 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+/* Darken effect on hover */
+.darken-image:hover {
+    filter: brightness(0.75); /* Adjust the value for desired darkness */
+}
+
+.account-btn {
+    background-color: #ff6363;
+    border: 1px solid #ff6363
+}
+
+.account-btn:hover {
+    background-color: #d25252;
+    border: 1px solid #d25252
+}
+
+.rotate-image {
+    transform: rotate(-90deg);
+}
+
+.rotate-image-slightly {
+    transform: rotate(-45deg);
+}
+
+.horiz-flip-image {
+    transform: rotate(180deg);
+}
+
+.cart-container {
+    position: fixed;
+    top: 50px; /* This will be adjusted by JavaScript */
+    left: 0px;
+    width: 250px; /* Adjust this according to your layout */
+    z-index: 998;
+}
+
+.cart-body {
+    height: 550px
+}
+
+#cart-switch {
+    position: fixed;
+    top: 50%; /* This will be adjusted by JavaScript */
+    left: -8px;
+    width: 35px;
+    height: 50px; /* Adjust this according to your layout */
+    z-index: 999;
+}

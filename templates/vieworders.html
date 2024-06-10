@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Your Order History{% endblock %}
+{% set active_page = 'vieworders' %}
+{% block content %}
+
+<header class="bg-dark py-5" style="background: url('static/assets/orders.jpg') no-repeat center center; background-size: cover;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white text-shadow">
+            <h1 class="display-4 fw-bolder text-shadow">Your Orders</h1>
+            <p class="lead fw-normal text-white-25 mb-0 text-shadow">Review Your Past Orders</p>
+        </div>
+    </div>
+</header>
+
+<section class="py-5">
+    <br><br>
+    <div class="container px-4 px-lg-5">
+        <!-- Current Orders -->
+        <table class="table table-bordered table-striped">
+            <tbody id="thechadcart" style="width: 100%; height: auto;">
+                {% for order in current_orders %}
+                <tr class="order" id="{{order.id}}" style="width: 100%; height: auto;">
+                    <td colspan="4" style="width: 100%; border: 0;">
+                        <table class="table table-hover mb-0" style="border: 0;">
+                            <tr style="width: 100%; border: 0;">
+                                <td class="date" style="width: 30%;">{{order.timestamp.strftime("%A, %B %d, %Y at %I:%M %p")}}</td>
+                                <td class="price" style="width: 30%;">${{"{:.2f}".format(order.price)}}</td>
+                                <td class="status" style="width: 30%;">
+                                    {% if order.status == 0 %}
+                                    <p class="font-weight-bold text-secondary" style="font-size: 20px">PENDING</p>
+                                    {% endif %}
+                                    {% if order.status == 1 %}
+                                    <button class="btn btn-success font-weight-bold" style="font-size: 20px">Ready</button>
+                                    {% endif %}
+                                    {% if order.status == 2 %}
+                                    <p class="font-weight-bold text-danger" style="font-size: 20px">CANCELLED</p>
+                                    {% endif %}
+                                </td>
+                                <td style="width: 10%;">
+                                    <img src="static/assets/chevron.png" id="button-{{order.id}}" class="btn btn-info rotate-image" style="height: 35px; width: 35px;">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="order-details" id="details-{{order.id}}" style="display: none; width:90%">
+                    <td colspan="4" style="width: 90%; border: 0;">
+                        <table class="table table-hover" id="expanded-{{order.id}}" style="width: 90%; border: 0;"></table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <hr>
+    <!-- Old Orders -->
+    <br><br>
+    {% if old_orders %}
+    <div class="card-header">
+        <h3 class="text-center my-4 display-4 fw-bolder">Past Orders</h3>
+    </div>
+    <div class="container px-4 px-lg-5">
+        <table class="table table-bordered table-striped">
+            <tbody id="thechadcart" style="width: 100%; height: auto;">
+                {% for order in old_orders %}
+                <tr class="order" id="{{order.id}}" style="width: 100%; height: auto;">
+                    <td colspan="4" style="width: 100%; border: 0;">
+                        <table class="table table-hover mb-0" style="border: 0;">
+                            <tr style="width: 100%; border: 0;">
+                                <td class="date" style="width: 30%;">{{order.timestamp.strftime("%A, %B %d, %Y at %I:%M %p")}}</td>
+                                <td class="price" style="width: 30%;">${{"{:.2f}".format(order.price)}}</td>
+                                <td class="status" style="width: 30%;">
+                                    {% if order.status == 0 %}
+                                    <p class="font-weight-bold" style="font-size: 20px; color: #8B0000;">EXPIRED</p>
+                                    {% endif %}
+                                    {% if order.status == 1 %}
+                                    <p class="font-weight-bold text-success" style="font-size: 20px">Ready</p>
+                                    {% endif %}
+                                    {% if order.status == 2 %}
+                                    <p class="font-weight-bold text-danger" style="font-size: 20px">CANCELLED</p>
+                                    {% endif %}
+                                </td>
+                                <td style="width: 10%;">
+                                    <img src="static/assets/chevron.png" id="button-{{order.id}}" class="btn btn-info rotate-image" style="height: 35px; width: 35px;">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="order-details" id="details-{{order.id}}" style="display: none; width:90%">
+                    <td colspan="4" style="width: 90%; border: 0;">
+                        <table class="table table-hover" id="expanded-{{order.id}}" style="width: 90%; border: 0;"></table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <script src="static/js/checkout.js"></script>
+    <div class="mt-4" style="margin-left: 20px;">
+        <a href="/" class="btn btn-primary">🠜 Continue Shopping</a>
+    </div>
+    <script src="static/js/vieworders.js"></script>
+</section>
+
+<script>
+    // JavaScript code to run when the webpage loads
+    document.addEventListener('DOMContentLoaded', function() {
+    
+        True = true
+        False = false
+        mealsData = {{mealsData|safe}}
+        orderData = {{orderData|safe}}
+
+        orders = document.querySelectorAll('.order');
+        
+        orders.forEach(order => {
+            expand_button = document.getElementById(`button-${order.id}`)
+            orderItems = orderData[order.id]
+
+            refreshCart(mealsData, orderItems, document.getElementById(`expanded-${order.id}`))
+    
+            expand_button.addEventListener('click', function() {
+                const detailsRow = document.getElementById(`details-${order.id}`);
+                if (detailsRow.style.display === 'none') {
+                    detailsRow.style.display = 'table-row';
+                } else {
+                    detailsRow.style.display = 'none';
+                }
+            })
+        })
+    
+    });
+</script>
+
+{% endblock %}

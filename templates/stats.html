@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Meal Statistics (Admin){% endblock %}
+{% set active_page = 'stats' %}
+{% block content %}
+<style>
+    .title {
+        text-align: center;
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-bottom: 40px;
+        color: #343a40;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 1.75em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #343a40;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .meal-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 40px;
+    }
+
+    .meal {
+        flex: 1 1 calc(33.333% - 10px);
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .meal:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .meal-number {
+        font-size: 1.5em;
+        color: #555;
+    }
+
+    .chart-container {
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+        .meal {
+            flex: 1 1 calc(50% - 10px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .meal {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+<body>
+    <div class="title mt-4">Meal Statistics</div>
+    
+    <div class="section-title">Orders of All Time</div>
+    <div class="meal-container">
+        {% for meal in meals %}
+        <div class="meal">
+            <div>{{ meal.name }}</div>
+            <div class="meal-number">{{ meal_counts[meal.id] }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="section-title">Meals Over Time</div>
+    <div class="chart-container">
+        <canvas id="ordersOverTimeChart" width="400" height="200"></canvas>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('ordersOverTimeChart').getContext('2d');
+        const dates = {{ dates | tojson }};
+        const mealOrderData = {{ meal_order_data | tojson }};
+        const mealNames = {{ meal_names | tojson }};
+
+        const datasets = Object.keys(mealOrderData).map(mealId => {
+            return {
+                label: mealNames[mealId],
+                data: mealOrderData[mealId],
+                fill: false,
+                borderColor: `rgba(${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*255)}, 1)`,
+                backgroundColor: `rgba(${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*255)}, ${Math.floor(Math.random()*255)}, 0.2)`,
+                borderWidth: 1
+            };
+        });
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Orders'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

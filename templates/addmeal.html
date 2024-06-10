@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}ADD MEAL{% endblock %}
+{% set active_page = 'addmeal' %}
+{% block content %}
+
+
+{% if mealData %}
+<form method='POST' id="form" enctype="multipart/form-data" action="/editmeal">
+{% else %}
+<form method='POST' id="form" enctype="multipart/form-data" action="/addmeal">
+{% endif %}
+
+    {% if input_meal %}
+    <input type="number" style="display:none" name="meal_id" value="{{input_meal.id}}">
+    {% endif %}
+
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                        <div class="card-header"><h3 class="text-center font-weight-light my-4">Add Meal</h3></div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3 mb-md-0">
+                                        <input class="form-control" type="text" name="name" placeholder="Enter the name of the meal" {% if input_meal %}value="{{input_meal.name}}"{% endif %} />
+                                        <label for="name">Meal Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input class="form-control" id="price-input-strict" min="0" step="0.01" type="text" name="price" placeholder="Enter the price" {% if input_meal %}value="${{"{:.2f}".format(input_meal.price)}}"{% endif %} />
+                                        <label for="price">Price</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input class="form-control" type="number" name="qty" placeholder="Enter the initial quantity" {% if input_meal %}value="{{input_meal.qty}}"{% endif %} />
+                                        <label for="qty">Initial Quantity</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <div class="dropdown w-100">
+                                            <button type="button" class="dropbtn btn w-100">Select Categories</button>
+                                            <div class="dropdown-content" id="category-dropdown">
+                                                {% for category in categories %}
+                                                <label><input type="radio" name="category-select" value="{{ category.id }}" {% if input_meal %}{% if category.id == input_meal.category_id %} checked {% endif %}{% endif %}> {{ category.name }}</label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 mt-4 justify-content-center">
+                                <div class="col-md-4 text-center"></div>
+                                <div class="col-md-4 text-center">
+                                    <label class="cool-looking-add-button" id="image-box">
+                                        <span style="font-size: 20px; margin-right: 5px;">+</span> Choose an image
+                                        <input type="file" style="display: none;" id="image" name="image_file" accept=".jpg, .png">
+                                    </label>
+                                    <div id="file-name"></div>
+                                </div>
+                                <div class="col-md-4 text-center" style="font-size: 1px; border-width: 3px; ">
+                                    <label class="btn btn-outline-primary" id="upload" style="font-weight: bold;">
+                                        <form method='POST' id="form" enctype="multipart/form-data" action="/editmeal">
+                                            <i class="bi bi-upload" style="font-size: 16px; -webkit-text-stroke: 1px;"></i> Upload
+                                            <input type="file" style="display: none;" id="upload-meal" name="mealData" accept=".txt">
+                                        </form>
+                                    </label>
+                                    {% if mealData %}
+                                    <label class="btn btn-primary" id="download">
+                                        <i class="bi bi-download" style="font-size: 16px;"></i> Download
+                                    </label>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <input name="num_of_tags" style="display: none;" type="number" value="0">
+                            <div class="row justify-content-center" id="tag-table-display">
+                                <div class="col-4" id="tag-col-1"></div>
+                                <div class="col-4" id="tag-col-2"></div>
+                                <div class="col-4" id="tag-col-3"></div>
+                            </div>
+                            <div style="display: none" id="tag-table"></div>
+                            <div class="card text-center" id="tag-buttons">
+                                <div class="card-header position-relative">Tags</div>
+                                <div class="row mt-0">
+                                    <div class="col-4 text-center" id="add-single-tag">
+                                        <label class="cool-looking-add-button" style="display:block">
+                                            <span style="font-size: 20px; margin-right: 5px;">+</span> Single-Choice
+                                        </label>
+                                    </div>
+                                    <div class="col-4 text-center" id="add-multi-tag">
+                                        <label class="cool-looking-add-button" style="display:block">
+                                            <span style="font-size: 20px; margin-right: 5px;">+</span> Multi-Choice
+                                        </label>
+                                    </div>
+                                    <div class="col-4 text-center" id="add-binary-tag">
+                                        <label class="cool-looking-add-button" style="display:block">
+                                            <span style="font-size: 20px; margin-right: 5px;">+</span> Binary Tag
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 mb-0">
+                                <button class="w-100 btn btn-lg btn-primary" id="submit-form">{% if mealData %}Save Changes{% else %}Create Meal{% endif %}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="static/js/addmeal.js"></script>
+        <script src="static/js/editmeal.js"></script>
+    </main>
+</form>
+
+{% if mealData %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    True = true
+    False = false
+    mealData = {{mealData|safe}}
+
+    reloadTags(mealData)
+    makeImageOptional()
+});
+</script>
+{% endif %}
+
+{% endblock %}
+

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}ORDER MEAL{% endblock %}
+{% set active_page = 'order' %}
+{% block content %}
+
+<script>
+    var mealData = {{mealData | tojson | safe}}
+</script>
+
+<form method='POST' id="form" action="/customizemeal?meal_id={{ meal.id }}">
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-11">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4 d-flex flex-column align-items-center" style="margin-bottom:20px">
+                                    <h1 class="text-center">{{ meal.name }}</h1>
+                                    <img class="img-fluid rounded mt-3 mb-3" style="width: 274px; height: 274px;" src="data:image/jpeg;base64,{{ image_data_b64 }}" alt="Meal Image" />
+                                    <div class="d-flex align-items-center mt-2">
+                                        <label for="qty" class="me-2" style="font-size:30px;">Qty:</label>
+                                        <input id="qty" class="form-control" style="font-size:30px; width: 75px;" type="number" name="qty" value="1" min="1" />
+                                        <span style="font-size:30px; margin-left:20px; margin-right:20px">&#8226;</span>
+                                        <span style="font-size:40px;" id="meal-price"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row justify-content-center" id="tag-table-display">
+                                        <div class="col-4" id="tag-col-1"></div>
+                                        <div class="col-4" id="tag-col-2"></div>
+                                        <div class="col-4" id="tag-col-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="mt-4 mb-0">
+                                <button class="w-100 btn btn-lg btn-primary" type="submit">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="static/js/customizemeal.js"></script>
+    </main>
+</form>
+
+{% endblock %}

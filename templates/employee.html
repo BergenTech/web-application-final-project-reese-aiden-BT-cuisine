@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Employee Interface{% endblock %}
+{% set active_page = 'employee' %}
+{% block content %}
+
+
+
+<section class="py-5">
+    <div class="mt-4" style="margin-left: 20px;">
+        <a href="/" class="btn btn-primary">Refresh</a>
+    </div>
+    {% if workbench %}
+    <div class="container px-4 px-lg-5">
+        <!-- Current Orders -->
+        <table class="table table-bordered table-striped">
+            <tbody id="thechadcart" style="width: 100%; height: auto;">
+                {% for order in workbench %}
+                <tr class="order" id="{{order.id}}" style="width: 100%; height: auto;">
+                    <td colspan="4" style="width: 100%; border: 0;">
+                        <table class="table table-hover mb-0" style="border: 0;">
+                            <tr style="width: 100%; border: 0;">
+                                <td class="date" style="width: 10%;">{{order.user.first_name}}</td>
+                                <td class="date" style="width: 10%;">{{order.user.last_name}}</td>
+                                <td class="date" style="width: 10%;">Period {{order.user.lunch_period}}</td>
+                                <td class="date" style="width: 30%;">{{order.timestamp.strftime("%A, %B %d, %Y at %I:%M %p")}}</td>
+                                <td class="status" style="width: 10%; text-align: center">${{"{:.2f}".format(order.price)}}</td>
+                                <td style="width: 30%;">
+                                    <form action="/" method="post" style="display: inline-block;">
+                                        <button class="btn btn-success" type="submit"><img src="static/assets/check.png" style="height: 35px; width: 35px;" onclick="return confirm('Are you sure you want to submit this order?')"></button>
+                                        <input type="number" name="order_id" style="display:none" value="{{order.id}}">
+                                        <input type="number" name="command" style="display:none" value="1">
+                                    </form>
+                                    <form action="/" method="post" style="display: inline-block;">
+                                        <button class="btn btn-warning" type="submit"><img src="static/assets/cross.png" style="height: 35px; width: 35px;"></button>
+                                        <input type="number" name="order_id" style="display:none" value="{{order.id}}">
+                                        <input type="number" name="command" style="display:none" value="2">
+                                    </form>
+                                    <form action="/" method="post" style="display: inline-block;">
+                                        <button class="btn btn-danger" type="submit"><img src="static/assets/delete.png" style="height: 35px; width: 35px;" onclick="return confirm('Are you sure you want to cancel this order?')"></button>
+                                        <input type="number" name="order_id" style="display:none" value="{{order.id}}">
+                                        <input type="number" name="command" style="display:none" value="3">
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="order-details" id="details-{{order.id}}" style="display: table-row; width:90%">
+                    <td colspan="4" style="width: 90%; border: 0;">
+                        <table class="table table-hover" id="expanded-{{order.id}}" style="width: 90%; border: 0;"></table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <br><br>
+    <hr>
+    <!-- Old Orders -->
+    <br><br>
+    <div class="container px-4 px-lg-5">
+        <table class="table table-bordered table-striped">
+            <tbody id="thechadcart" style="width: 100%; height: auto;">
+                {% for order in orders %}
+                <tr class="order" id="{{order.id}}" style="width: 100%; height: auto;">
+                    <td colspan="4" style="width: 100%; border: 0;">
+                        <table class="table table-hover mb-0" style="border: 0;">
+                            <tr style="width: 100%; border: 0;">
+                                <td class="date" style="width: 30%;">{{order.timestamp.strftime("%A, %B %d, %Y at %I:%M %p")}}</td>
+                                <td class="price" style="width: 30%;">${{"{:.2f}".format(order.price)}}</td>
+                                <td class="status" style="width: 30%;">
+                                    {% if workbench %}
+                                    <form action="/" method="post">
+                                        <button class="btn btn-success" type="submit"><img src="static/assets/cross.png" class="rotate-image-slightly" style="height: 35px; width: 35px;"></button>
+                                        <input type="number" name="order_id" style="display:none" value="{{order.id}}">
+                                        <input type="number" name="command" style="display:none" value="0">
+                                    </form>
+                                    {% endif %}
+                                </td>
+                                <td style="width: 10%;">
+                                    <img src="static/assets/chevron.png" id="button-{{order.id}}" class="btn btn-info rotate-image" style="height: 35px; width: 35px;">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="order-details" id="details-{{order.id}}" style="display: none; width:90%">
+                    <td colspan="4" style="width: 90%; border: 0;">
+                        <table class="table table-hover" id="expanded-{{order.id}}" style="width: 90%; border: 0;"></table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="static/js/checkout.js"></script>
+    <script src="static/js/employee.js"></script>
+</section>
+
+<script>
+    // JavaScript code to run when the webpage loads
+    document.addEventListener('DOMContentLoaded', function() {
+    
+        True = true
+        False = false
+        mealsData = {{mealsData|safe}}
+        orderData = {{orderData|safe}}
+
+        orders = document.querySelectorAll('.order');
+        
+        orders.forEach(order => {
+            expand_button = document.getElementById(`button-${order.id}`)
+            orderItems = orderData[order.id]
+
+            refreshCart(mealsData, orderItems, document.getElementById(`expanded-${order.id}`))
+    
+            expand_button.addEventListener('click', function() {
+                const detailsRow = document.getElementById(`details-${order.id}`);
+                if (detailsRow.style.display === 'none') {
+                    detailsRow.style.display = 'table-row';
+                } else {
+                    detailsRow.style.display = 'none';
+                }
+            })
+        })
+    
+    });
+</script>
+
+{% endblock %}

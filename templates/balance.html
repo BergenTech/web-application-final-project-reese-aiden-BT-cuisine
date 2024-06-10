@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Balance{% endblock %}
+{% set active_page = 'balance' %}
+{% block content %}
+<style>
+    /* Basic styling for demonstration */
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    input[type="text"], input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Update Your Balance</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+            </div>
+            <button type="submit" name="action" value="add" class="btn btn-primary">Add</button>
+            <button type="submit" name="action" value="subtract" class="btn btn-danger">Subtract</button>
+        </form>
+
+        {% if message %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <div class="mt-3">
+            <h4>Current Balance: ${{ current_user.balance }}</h4>
+        </div>
+    </div>
+</body>
+
+<form id="creditCardForm">
+    <label for="cardNumber">Credit Card Number:</label>
+    <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter your card number" required>
+
+    <label for="expirationDate">Expiration Date:</label>
+    <input type="text" id="expirationDate" name="expirationDate" placeholder="MM/YY" required>
+
+    <label for="cardName">Name on Card:</label>
+    <input type="text" id="cardName" name="cardName" placeholder="Enter your name" required>
+
+    <label for="securityCode">Security Code:</label>
+    <input type="number" id="securityCode" name="securityCode" placeholder="Enter security code" required>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    document.getElementById("creditCardForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get form values
+        var cardNumber = document.getElementById("cardNumber").value;
+        var expirationDate = document.getElementById("expirationDate").value;
+        var cardName = document.getElementById("cardName").value;
+        var securityCode = document.getElementById("securityCode").value;
+
+        // Basic validation
+        if (cardNumber.length !== 16 || isNaN(cardNumber)) {
+            alert("Please enter a valid 16-digit card number.");
+            return;
+        }
+
+        if (!expirationDate.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
+            alert("Please enter a valid expiration date in MM/YY format.");
+            return;
+        }
+
+        if (cardName.trim() === "") {
+            alert("Please enter the name on your card.");
+            return;
+        }
+
+        if (securityCode.length !== 3 || isNaN(securityCode)) {
+            alert("Please enter a valid 3-digit security code.");
+            return;
+        }
+
+        // If all validations pass, you can proceed with further actions like sending data to a server
+        alert("Form submitted successfully!");
+        // Here you can proceed with further actions like sending the form data to a server
+    });
+</script>
+{% endblock %}

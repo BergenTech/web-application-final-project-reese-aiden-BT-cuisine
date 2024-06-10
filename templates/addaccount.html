@@ -1,0 +1,91 @@
+{%extends "base.html"%}
+{%block title%}Add Account Page{%endblock%}
+{%set active_page = 'addaccount'%}
+{%block content%}
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Add Account</h3></div>
+                            <div class="card-body">
+                                <form method="POST" action="/addaccount">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="firstName" type="text" placeholder="First Name" name="first_name"/>
+                                                <label for="inputPassword">First Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="lastName" type="text" placeholder="Last Name" name="last_name"/>
+                                                <label for="inputPasswordConfirm">Last Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-8">
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" name="email"/>
+                                                <label for="inputEmail">Email Address</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputLunchPeriod" type="number" min="4" step="1" max="7" name="lunch_period"/>
+                                                <label for="inputLunchPeriod">L. Period</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" id="inputType" type="checkbox" name="type"/>
+                                                <label class="form-check-label" for="inputType">Is Employee?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputPassword" type="password" placeholder="Create a password" name="school_id"/>
+                                                <label for="inputPassword">School ID</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputPasswordConfirm" type="confirm_password" placeholder="Confirm password" name="confirm_school_id"/>
+                                                <label for="inputPasswordConfirm">Confirm School ID</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 mb-0">
+                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Add Account</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="layoutAuthentication_footer">
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Bergen Tech Cuisine 2024</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="static/js/addaccount.js"></script>
+</div>
+
+{%endblock%}
